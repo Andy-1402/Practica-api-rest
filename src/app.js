@@ -9,6 +9,10 @@
 const express = require('express');
 const cors = require('cors');
 
+const usuariosRoutes = require('./routes/usuarios.routes');
+const notFound = require('./middlewares/notFound');
+const errorHandler = require('./middlewares/errorHandler');
+
 const app = express();
 
 // ---------- Middlewares globales ----------
@@ -38,5 +42,15 @@ app.get('/', (req, res) => {
     },
   });
 });
+
+// ---------- Rutas del recurso usuarios ----------
+
+app.use('/usuarios', usuariosRoutes);
+
+// ---------- Middlewares finales ----------
+// IMPORTANTE: van al final, después de todas las rutas.
+
+app.use(notFound);      // Ruta inexistente -> 404
+app.use(errorHandler);  // Error inesperado -> 500
 
 module.exports = app;
